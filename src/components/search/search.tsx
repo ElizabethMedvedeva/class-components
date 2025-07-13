@@ -3,6 +3,7 @@ import { searchRequest } from '../../api/apiClient';
 
 export interface SearchProps {
   onSearch?: (term: string) => void;
+  setCardState: (animal: any) => void;
 }
 export interface SearchState {
   inputValue: string;
@@ -14,13 +15,26 @@ export class Search extends React.Component<SearchProps, SearchState> {
     this.state = {
       inputValue: '',
     };
+    this.setCardState = props.setCardState;
   }
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ inputValue: event.target.value });
   };
-  handleSearch = () => {
-    searchRequest(this.state.inputValue);
+  handleSearch = async () => {
+    const animalResponse = await searchRequest(this.state.inputValue);
+    this.setCardState(animalResponse.animals);
   };
+
+  async componentDidMount(): void {
+    const animalResponse = await searchRequest('');
+    this.props.setCardState(animalResponse.animals);
+  }
+  componentDidUpdate(
+    prevProps?: Readonly<{}>,
+    prevState?: Readonly<CardListState>,
+    snapshot?: any
+  ): void {}
+  componentWillUnmount(): void {}
 
   render() {
     return (
