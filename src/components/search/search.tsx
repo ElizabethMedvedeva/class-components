@@ -1,14 +1,6 @@
 import React from 'react';
 import { searchRequest } from '../../api/apiClient';
-import type { CardProps } from '../../types/types';
-
-export interface SearchProps {
-  onSearch?: (term: string) => void;
-  setCardState: (animal: CardProps[]) => void;
-}
-export interface SearchState {
-  inputValue: string;
-}
+import type { SearchProps, SearchState } from '../../types/interfaces';
 
 export class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {
@@ -23,24 +15,37 @@ export class Search extends React.Component<SearchProps, SearchState> {
   };
 
   handleSearch = async () => {
+    const trimmedInput = this.state.inputValue.trim();
+    this.props.setLoading(true);
+
     try {
-      const animalResponse = await searchRequest(this.state.inputValue);
+      localStorage.setItem('searchTerm', trimmedInput);
+
+      const animalResponse = await searchRequest(trimmedInput);
       this.props.setCardState(animalResponse.animals);
 
       if (this.props.onSearch) {
-        this.props.onSearch(this.state.inputValue);
+        this.props.onSearch(trimmedInput);
       }
     } catch (error) {
       console.error('Search failed:', error);
+    } finally {
+      this.props.setLoading(false);
     }
   };
 
   async componentDidMount(): Promise<void> {
+    const savedTerm = localStorage.getItem('searchTerm')?.trim() || '';
+    this.setState({ inputValue: savedTerm });
+    this.props.setLoading(true);
+
     try {
-      const animalResponse = await searchRequest('');
+      const animalResponse = await searchRequest(savedTerm);
       this.props.setCardState(animalResponse.animals);
     } catch (error) {
-      console.error('Initial fetch failed:', error);
+      console.error(error);
+    } finally {
+      this.props.setLoading(false);
     }
   }
 

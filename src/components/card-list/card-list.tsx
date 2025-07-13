@@ -1,10 +1,7 @@
 import React from 'react';
-import type { CardListState, CardProps } from '../../types/types';
+import type { CardListState } from '../../types/types';
 import { Card } from '../card/card';
-
-interface CardListProps {
-  animalsList: CardProps[];
-}
+import type { CardListProps } from '../../types/interfaces';
 
 export class CardList extends React.Component<CardListProps, CardListState> {
   constructor(props: CardListProps) {
@@ -14,7 +11,6 @@ export class CardList extends React.Component<CardListProps, CardListState> {
       loading: false,
       error: null,
     };
-    console.log(props.animalsList);
   }
 
   componentDidUpdate(prevProps: CardListProps): void {
@@ -24,10 +20,15 @@ export class CardList extends React.Component<CardListProps, CardListState> {
   }
 
   render() {
-    const { animals, loading, error } = this.state;
+    const { animals, loading } = this.state;
 
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center h-64">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-yellow-300 border-solid"></div>
+        </div>
+      );
+    }
 
     return (
       <div>
