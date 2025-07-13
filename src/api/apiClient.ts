@@ -4,15 +4,11 @@ type SearchResponse = {
   pageSize?: number;
 };
 
-export const search = async (
-  title: string,
-  pageNumber: number,
-  pageSize: number
-): Promise<SearchResponse> => {
-  const result = await fetch('https://stapi.co/api/v1/rest/character/search', {
+export const searchRequest = async (title: string): Promise<SearchResponse> => {
+  const result = await fetch('https://stapi.co/api/v1/rest/animal/search', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title, pageNumber, pageSize }),
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ name: title }),
   });
   if (!result.ok) throw new Error('Failed to fetch characters');
 
