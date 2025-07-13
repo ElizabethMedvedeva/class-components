@@ -1,17 +1,15 @@
 import { Component } from 'react';
 import { CardList } from './components/card-list/card-list';
 import { Search } from './components/search/search';
-import type { AppState } from './types/types';
-import type { CardProps } from '@mui/material';
+import type { AppState, CardProps } from './types/types';
 
-class App extends Component<{}, AppState> {
+class App extends Component<object, AppState> {
   state: AppState = {
     animals: [],
   };
 
-  setAnimals = (animals) => {
+  setAnimals = (animals: Array<CardProps>) => {
     this.setState({ animals: animals });
-    console.log('anrei pidor', animals);
   };
 
   render() {

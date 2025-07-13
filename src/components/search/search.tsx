@@ -1,9 +1,10 @@
 import React from 'react';
 import { searchRequest } from '../../api/apiClient';
+import type { CardProps } from '../../types/types';
 
 export interface SearchProps {
   onSearch?: (term: string) => void;
-  setCardState: (animal: any) => void;
+  setCardState: (animal: CardProps[]) => void;
 }
 export interface SearchState {
   inputValue: string;
@@ -15,26 +16,33 @@ export class Search extends React.Component<SearchProps, SearchState> {
     this.state = {
       inputValue: '',
     };
-    this.setCardState = props.setCardState;
   }
+
   handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     this.setState({ inputValue: event.target.value });
   };
+
   handleSearch = async () => {
-    const animalResponse = await searchRequest(this.state.inputValue);
-    this.setCardState(animalResponse.animals);
+    try {
+      const animalResponse = await searchRequest(this.state.inputValue);
+      this.props.setCardState(animalResponse.animals);
+
+      if (this.props.onSearch) {
+        this.props.onSearch(this.state.inputValue);
+      }
+    } catch (error) {
+      console.error('Search failed:', error);
+    }
   };
 
-  async componentDidMount(): void {
-    const animalResponse = await searchRequest('');
-    this.props.setCardState(animalResponse.animals);
+  async componentDidMount(): Promise<void> {
+    try {
+      const animalResponse = await searchRequest('');
+      this.props.setCardState(animalResponse.animals);
+    } catch (error) {
+      console.error('Initial fetch failed:', error);
+    }
   }
-  componentDidUpdate(
-    prevProps?: Readonly<{}>,
-    prevState?: Readonly<CardListState>,
-    snapshot?: any
-  ): void {}
-  componentWillUnmount(): void {}
 
   render() {
     return (

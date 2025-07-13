@@ -16,3 +16,17 @@ export type CardListState = {
 export type AppState = {
   animals: CardProps[];
 };
+
+export interface SearchResponse {
+  animals: CardProps[];
+  page: {
+    pageNumber: number;
+    pageSize: number;
+    numberOfElements: number;
+    totalElements: number;
+    totalPages: number;
+  };
+  sort: {
+    clauses: unknown[];
+  };
+}

@@ -1,8 +1,4 @@
-type SearchResponse = {
-  title?: string;
-  pageNumber?: number;
-  pageSize?: number;
-};
+import type { SearchResponse } from '../types/types';
 
 export const searchRequest = async (title: string): Promise<SearchResponse> => {
   const result = await fetch('https://stapi.co/api/v1/rest/animal/search', {
@@ -14,6 +10,5 @@ export const searchRequest = async (title: string): Promise<SearchResponse> => {
 
   const data = await result.json();
 
-  console.log(data, 'data');
   return data;
 };

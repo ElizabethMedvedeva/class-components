@@ -1,9 +1,13 @@
 import React from 'react';
-import type { CardListState } from '../../types/types';
+import type { CardListState, CardProps } from '../../types/types';
 import { Card } from '../card/card';
 
-export class CardList extends React.Component<{}, CardListState> {
-  constructor(props: {}) {
+interface CardListProps {
+  animalsList: CardProps[];
+}
+
+export class CardList extends React.Component<CardListProps, CardListState> {
+  constructor(props: CardListProps) {
     super(props);
     this.state = {
       animals: props.animalsList,
@@ -12,17 +16,13 @@ export class CardList extends React.Component<{}, CardListState> {
     };
     console.log(props.animalsList);
   }
-  componentDidMount(): void {}
-  componentDidUpdate(
-    prevProps?: Readonly<{}>,
-    prevState?: Readonly<CardListState>,
-    snapshot?: any
-  ): void {
+
+  componentDidUpdate(prevProps: CardListProps): void {
     if (prevProps.animalsList !== this.props.animalsList) {
       this.setState({ animals: this.props.animalsList });
     }
   }
-  componentWillUnmount(): void {}
+
   render() {
     const { animals, loading, error } = this.state;
 
@@ -31,11 +31,13 @@ export class CardList extends React.Component<{}, CardListState> {
 
     return (
       <div>
-        <h2>List of items</h2>
+        <h2 className="text-xl font-bold mb-4">List of items</h2>
         {animals.length === 0 && <p>No animals found.</p>}
-        {animals.map((animal) => (
-          <Card key={animal.uid} {...animal} />
-        ))}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {animals.map((animal) => (
+            <Card key={animal.uid} {...animal} />
+          ))}
+        </div>
       </div>
     );
   }
