@@ -3,6 +3,7 @@ import { CardList } from './components/card-list/card-list';
 import { Search } from './components/search/search';
 import type { AppState, CardProps } from './types/types';
 import { ErrorButton } from './components/error-boundary/error-button';
+import { ErrorBoundary } from './components/error-boundary/error-boundary';
 
 class App extends Component<object, AppState> {
   state: AppState = {
@@ -30,12 +31,14 @@ class App extends Component<object, AppState> {
           setLoading={this.setLoading}
           setError={this.setError}
         ></Search>
-        <CardList
-          animalsList={this.state.animals}
-          loading={this.state.loading}
-          error={this.state.error}
-        ></CardList>
-        <ErrorButton />
+        <ErrorBoundary>
+          <CardList
+            animalsList={this.state.animals}
+            loading={this.state.loading}
+            error={this.state.error}
+          ></CardList>
+          <ErrorButton />
+        </ErrorBoundary>
       </>
     );
   }
