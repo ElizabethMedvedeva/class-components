@@ -54,7 +54,7 @@ export class Search extends React.Component<SearchProps, SearchState> {
       <>
         <div className="w-full bg-black flex items-center justify-between py-4 px-8 shadow-md">
           <div className="flex items-center gap-2">
-            <img src="/logo.png" alt="logo" className="w-[35px] h-[35px]" />
+            <img src="logo.png" alt="logo" className="w-[35px] h-[35px]" />
             <h2 className="text-yellow-300 text-xl font-bold">Pet Shop</h2>
           </div>
 
