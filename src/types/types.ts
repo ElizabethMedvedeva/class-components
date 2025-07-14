@@ -16,4 +16,5 @@ export type CardListState = {
 export type AppState = {
   animals: CardProps[];
   loading: boolean;
+  error: string | null;
 };

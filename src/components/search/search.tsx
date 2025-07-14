@@ -29,6 +29,9 @@ export class Search extends React.Component<SearchProps, SearchState> {
       }
     } catch (error) {
       console.error('Search failed:', error);
+      this.props.setError(
+        'Something went wrong while searching. Please try again later.'
+      );
     } finally {
       this.props.setLoading(false);
     }

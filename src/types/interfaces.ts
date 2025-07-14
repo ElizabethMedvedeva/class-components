@@ -18,6 +18,7 @@ export interface SearchProps {
   onSearch?: (term: string) => void;
   setCardState: (animal: CardProps[]) => void;
   setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
 }
 export interface SearchState {
   inputValue: string;
@@ -26,4 +27,5 @@ export interface SearchState {
 export interface CardListProps {
   animalsList: CardProps[];
   loading: boolean;
+  error: string | null;
 }

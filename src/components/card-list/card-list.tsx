@@ -4,12 +4,20 @@ import type { CardListProps } from '../../types/interfaces';
 
 export class CardList extends React.Component<CardListProps> {
   render() {
-    const { animalsList, loading } = this.props;
+    const { animalsList, loading, error } = this.props;
 
     if (loading) {
       return (
         <div className="flex justify-center items-center h-64">
           <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-yellow-300 border-solid"></div>
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="p-4 bg-red-100 text-red-700 rounded-md text-center">
+          {error}
         </div>
       );
     }

@@ -7,6 +7,7 @@ class App extends Component<object, AppState> {
   state: AppState = {
     animals: [],
     loading: false,
+    error: null,
   };
 
   setAnimals = (animals: Array<CardProps>) => {
@@ -17,16 +18,21 @@ class App extends Component<object, AppState> {
     this.setState({ loading });
   };
 
+  setError = (error: string | null) => {
+    this.setState({ error });
+  };
   render() {
     return (
       <>
         <Search
           setCardState={this.setAnimals}
           setLoading={this.setLoading}
+          setError={this.setError}
         ></Search>
         <CardList
           animalsList={this.state.animals}
           loading={this.state.loading}
+          error={this.state.error}
         ></CardList>
       </>
     );
