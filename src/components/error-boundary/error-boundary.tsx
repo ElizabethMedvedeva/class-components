@@ -17,12 +17,11 @@ export class ErrorBoundary extends React.Component<
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    console.log('in getDerivedStateFromError');
     return { hasError: true, error };
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
-    console.log('ErrorBoundary caught an error:', error, errorInfo);
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
   }
   handleReset = () => {
     this.setState({ hasError: false });

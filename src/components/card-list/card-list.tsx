@@ -31,16 +31,6 @@ export class CardList extends React.Component<CardListProps> {
             <Card key={animal.uid} {...animal} />
           ))}
         </div>
-        <div className="mt-6 flex justify-end">
-          <button
-            onClick={() => {
-              throw new Error('Test error from CardList!');
-            }}
-            className="cursor-pointer bg-yellow-400 text-black px-4 py-2 rounded-md border border-yellow-500 hover:bg-yellow-500 mb-4 mr-4"
-          >
-            Throw Error
-          </button>
-        </div>
       </div>
     );
   }

@@ -2,6 +2,7 @@ import { Component } from 'react';
 import { CardList } from './components/card-list/card-list';
 import { Search } from './components/search/search';
 import type { AppState, CardProps } from './types/types';
+import { ErrorButton } from './components/error-boundary/error-button';
 
 class App extends Component<object, AppState> {
   state: AppState = {
@@ -34,6 +35,7 @@ class App extends Component<object, AppState> {
           loading={this.state.loading}
           error={this.state.error}
         ></CardList>
+        <ErrorButton />
       </>
     );
   }
