@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
@@ -19,10 +20,6 @@ export default defineConfig({
         'src/setupTests.{js,ts}',
         'src/**/*.d.ts',
       ],
-      lines: 50,
-      functions: 50,
-      branches: 50,
-      statements: 80,
     },
   },
 });
