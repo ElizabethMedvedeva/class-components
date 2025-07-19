@@ -1,14 +1,5 @@
 import React from 'react';
-
-export interface CardProps {
-  name: string;
-  uid: string;
-  avian: boolean;
-  canine: boolean;
-  feline: boolean;
-  earthAnimal: boolean;
-  earthInsect: boolean;
-}
+import type { CardProps } from '../../types/interfaces';
 
 export class Card extends React.Component<CardProps> {
   render() {

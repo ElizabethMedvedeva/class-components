@@ -1,5 +1,3 @@
-import type { CardProps } from './types';
-
 export interface SearchResponse {
   animals: CardProps[];
   page: {
@@ -28,4 +26,14 @@ export interface CardListProps {
   animalsList: CardProps[];
   loading: boolean;
   error: string | null;
+}
+
+export interface CardProps {
+  name: string;
+  uid: string;
+  avian: boolean;
+  canine: boolean;
+  feline: boolean;
+  earthAnimal: boolean;
+  earthInsect: boolean;
 }
