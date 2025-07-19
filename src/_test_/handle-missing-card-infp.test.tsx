@@ -1,0 +1,30 @@
+import { render, screen } from '@testing-library/react';
+import { describe, expect, it } from 'vitest';
+import { Card } from '../components/card/card';
+import type { CardProps } from '../types/interfaces';
+
+describe('Card handles missing or undefined data gracefully', () => {
+  it('renders fallback values for missing properties', () => {
+    const partialData: Partial<CardProps> = {};
+
+    const safeData: CardProps = {
+      name: partialData.name ?? 'Unknown',
+      uid: partialData.uid ?? '0000',
+      avian: partialData.avian ?? false,
+      canine: partialData.canine ?? false,
+      feline: partialData.feline ?? false,
+      earthAnimal: partialData.earthAnimal ?? false,
+      earthInsect: partialData.earthInsect ?? false,
+    };
+
+    render(<Card {...safeData} />);
+
+    expect(screen.getByText('Unknown')).toBeInTheDocument();
+    expect(screen.getByText('0000')).toBeInTheDocument();
+    expect(screen.getByText(/Avian:/i).textContent).toMatch(/false/i);
+    expect(screen.getByText(/Canine:/i).textContent).toMatch(/false/i);
+    expect(screen.getByText(/Feline:/i).textContent).toMatch(/false/i);
+    expect(screen.getByText(/Earth Animal:/i).textContent).toMatch(/false/i);
+    expect(screen.getByText(/Earth Insect:/i).textContent).toMatch(/false/i);
+  });
+});
