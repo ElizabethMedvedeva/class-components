@@ -47,6 +47,9 @@ export class Search extends React.Component<SearchProps, SearchState> {
       this.props.setCardState(animalResponse.animals);
     } catch (error) {
       console.error(error);
+      this.props.setError(
+        'Something went wrong while searching. Please try again later.'
+      );
     } finally {
       this.props.setLoading(false);
     }
