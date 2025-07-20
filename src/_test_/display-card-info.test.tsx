@@ -17,9 +17,9 @@ describe('Card component displays name, UID, and boolean properties', () => {
     expect(screen.getByText('Test Animal')).toBeInTheDocument();
     expect(screen.getByText(/UID:/i)).toBeInTheDocument();
     expect(screen.getByText('12345')).toBeInTheDocument();
-    expect(screen.getByText(/Avian:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Canine:/i)).toBeInTheDocument();
-    expect(screen.getByText(/Feline:/i)).toBeInTheDocument();
+    expect(screen.getByText(/Avian:/i).textContent).toMatch(/true/i);
+    expect(screen.getByText(/Canine:/i).textContent).toMatch(/false/i);
+    expect(screen.getByText(/Feline:/i).textContent).toMatch(/true/i);
     expect(screen.getByText(/Earth Animal:/i).textContent).toMatch(/false/i);
     expect(screen.getByText(/Earth Insect:/i).textContent).toMatch(/true/i);
   });
