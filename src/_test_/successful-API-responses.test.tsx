@@ -10,10 +10,10 @@ import { searchRequest } from '../api/apiClient';
 
 describe('Handles successful API responses', () => {
   it('Handles successful API responses', async () => {
-    localStorage.setItem('searchTerm', 'phenix');
+    localStorage.setItem('searchTerm', 'phoenix');
 
     const mockAnimals = [
-      { uid: '123', name: 'Phenix', feline: true },
+      { uid: '123', name: 'Phoenix', feline: true },
       { uid: '456', name: 'Cat', canine: true },
     ];
 
@@ -24,7 +24,7 @@ describe('Handles successful API responses', () => {
     render(<App />);
 
     await waitFor(() => {
-      expect(screen.getByText(/phenix/i)).toBeInTheDocument();
+      expect(screen.getByText(/phoenix/i)).toBeInTheDocument();
       expect(screen.getByText(/cat/i)).toBeInTheDocument();
     });
   });

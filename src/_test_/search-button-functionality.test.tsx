@@ -20,9 +20,9 @@ describe('Saves search term to localStorage when search button is clicked', () =
 
     const input = screen.getByPlaceholderText(/find your pet/i);
     const searchButton = screen.getByRole('button', { name: /tap to search/i });
-    await userEvent.type(input, 'phenix');
+    await userEvent.type(input, 'phoenix');
     await userEvent.click(searchButton);
     const savedTerm = localStorage.getItem('searchTerm');
-    expect(savedTerm).toBe('phenix');
+    expect(savedTerm).toBe('phoenix');
   });
 });
