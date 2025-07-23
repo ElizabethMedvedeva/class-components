@@ -40,7 +40,7 @@ describe('Retrieves saved search term on component mount', () => {
     render(<Search {...mockProps} />);
 
     const input = await screen.findByPlaceholderText(/find your pet/i);
-    expect(input).toHaveValue('gog');
+    expect(input).toHaveValue('dog');
 
     await waitFor(() => {
       expect(apiClient.searchRequest).toHaveBeenCalledWith('gog');
