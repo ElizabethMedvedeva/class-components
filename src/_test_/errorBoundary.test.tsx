@@ -3,7 +3,7 @@ import { ErrorBoundary } from '../components/error-boundary/error-boundary';
 import { ErrorButton } from '../components/error-boundary/error-button';
 import { fireEvent, render, screen } from '@testing-library/react';
 
-describe('Triggers error boundary fallback UI', () => {
+describe('Error Boundary component tests', () => {
   // Checks fallback UI is shown when the error button is clicked
   it('Triggers error boundary fallback UI', () => {
     const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});

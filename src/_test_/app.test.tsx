@@ -7,7 +7,7 @@ vi.mock('../api/apiClient', () => ({
 }));
 import { searchRequest } from '../api/apiClient';
 
-describe('Handles API error responses', () => {
+describe('App component tests', () => {
   // Handles API error and displays error message
   it('Handles API error responses', async () => {
     localStorage.setItem('searchTerm', 'fail');
