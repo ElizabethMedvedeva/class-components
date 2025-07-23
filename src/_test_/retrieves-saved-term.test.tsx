@@ -29,7 +29,7 @@ describe('Retrieves saved search term on component mount', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    localStorage.setItem('searchTerm', 'gog');
+    localStorage.setItem('searchTerm', 'dog');
   });
 
   afterEach(() => {
@@ -43,7 +43,7 @@ describe('Retrieves saved search term on component mount', () => {
     expect(input).toHaveValue('dog');
 
     await waitFor(() => {
-      expect(apiClient.searchRequest).toHaveBeenCalledWith('gog');
+      expect(apiClient.searchRequest).toHaveBeenCalledWith('dog');
     });
 
     expect(mockProps.setLoading).toHaveBeenCalledTimes(2);
