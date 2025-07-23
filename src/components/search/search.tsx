@@ -1,6 +1,6 @@
 import React from 'react';
 import { searchRequest } from '../../api/apiClient';
-import type { SearchProps, SearchState } from '../../types/interfaces';
+import type { SearchProps, SearchState } from '../../types/types';
 
 export class Search extends React.Component<SearchProps, SearchState> {
   constructor(props: SearchProps) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from '../card/card';
-import type { CardListProps } from '../../types/interfaces';
+import type { CardListProps } from '../../types/types';
 
 export class CardList extends React.Component<CardListProps> {
   render() {

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 import { Card } from '../components/card/card';
-import type { CardProps } from '../types/interfaces';
+import type { CardProps } from '../types/types';
 
 describe('Card handles missing or undefined data gracefully', () => {
   it('renders fallback values for missing properties', () => {
