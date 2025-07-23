@@ -48,7 +48,7 @@ describe('Search Component Tests', () => {
     expect(searchButton).toBeInTheDocument();
   });
 
-  // Check previously saved search term from LS
+  // Displays previously saved search term from localStorage on mount
   it('Displays previously saved search term from localStorage on mount', async () => {
     localStorage.setItem('searchTerm', 'dog');
 
@@ -81,6 +81,7 @@ describe('Search Component Tests', () => {
     expect(input).toHaveValue('dog');
 
     await waitFor(() => {
+      expect(apiClient.searchRequest).toHaveBeenCalledWith('dog');
       expect(mockProps.setCardState).toHaveBeenCalled();
     });
 
@@ -165,5 +166,38 @@ describe('Search Component Tests', () => {
     });
   });
 
-  //
+  // Handles API error and shows error message
+  it('Displays error message when API call fails', async () => {
+    const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
+    mockedSearchRequest.mockRejectedValueOnce(new Error('Network Error'));
+
+    render(<Search {...mockProps} />);
+
+    const user = userEvent.setup();
+    const input = screen.getByPlaceholderText(/find your pet/i);
+    const button = screen.getByRole('button', { name: /tap to search/i });
+
+    await user.type(input, 'dog');
+    await user.click(button);
+    expect(mockProps.setError).toHaveBeenCalledWith(
+      'Something went wrong while searching. Please try again later.'
+    );
+  });
+
+  // Overwrites existing localStorage value with new search
+  it('Overwrites existing localStorage value when new search is performed', async () => {
+    localStorage.setItem('searchTerm', 'old term');
+
+    render(<Search {...mockProps} />);
+
+    const user = userEvent.setup();
+    const input = screen.getByPlaceholderText(/find your pet/i);
+    const searchButton = screen.getByRole('button', { name: /tap to search/i });
+
+    await user.clear(input);
+    await user.type(input, 'new term');
+    await user.click(searchButton);
+
+    expect(localStorage.getItem('searchTerm')).toBe('new term');
+  });
 });
