@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { searchRequest } from '../../api/apiClient';
 import type { SearchProps } from '../../types/types';
+import { useSearchStorage } from '../../hooks/useLocalStorage';
 
 export const Search: React.FC<SearchProps> = ({
   setLoading,
@@ -9,6 +10,7 @@ export const Search: React.FC<SearchProps> = ({
   onSearch,
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const { getSearchTerm, saveSearchTerm } = useSearchStorage();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(event.target.value);
@@ -19,7 +21,7 @@ export const Search: React.FC<SearchProps> = ({
     setLoading(true);
 
     try {
-      localStorage.setItem('searchTerm', trimmedInput);
+      saveSearchTerm(trimmedInput);
 
       const animalResponse = await searchRequest(trimmedInput);
       setCardState(animalResponse.animals);
@@ -37,7 +39,7 @@ export const Search: React.FC<SearchProps> = ({
 
   useEffect(() => {
     const fetchInitialSearch = async () => {
-      const savedTerm = localStorage.getItem('searchTerm')?.trim() || '';
+      const savedTerm = getSearchTerm();
       setInputValue(savedTerm);
       setLoading(true);
 
@@ -54,7 +56,7 @@ export const Search: React.FC<SearchProps> = ({
       }
     };
     fetchInitialSearch();
-  }, [setLoading, setCardState, setError]);
+  }, [getSearchTerm, setLoading, setCardState, setError]);
 
   return (
     <>
