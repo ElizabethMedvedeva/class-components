@@ -6,3 +6,9 @@ export const LABELS = {
   earthAnimal: 'Earth Animal',
   earthInsect: 'Earth Insect',
 };
+
+export const ROUTES = {
+  MAIN: '/',
+  ABOUT: '/about',
+  NOTFOUND: '*',
+} as const;

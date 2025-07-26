@@ -1,32 +1,21 @@
-import { useState } from 'react';
-import { CardList } from './components/card-list/card-list';
-import { Search } from './components/search/search';
-import type { AppState } from './types/types';
-import { ErrorButton } from './components/error-boundary/error-button';
-import { ErrorBoundary } from './components/error-boundary/error-boundary';
+// App.tsx
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ROUTES } from './utils/constants';
+import { Main } from './pages/main/main';
+import NotFound from './pages/not-found/not-found';
 
-const App: React.FC = () => {
-  const [animals, setAnimals] = useState<AppState['animals']>([]);
-  const [loading, setLoading] = useState<AppState['loading']>(false);
-  const [error, setError] = useState<AppState['error']>(null);
+const router = createBrowserRouter([
+  {
+    path: ROUTES.MAIN,
+    element: <Main />,
+    errorElement: <NotFound />,
+  },
+  {
+    path: ROUTES.NOTFOUND,
+    element: <NotFound />,
+  },
+]);
 
-  return (
-    <>
-      <Search
-        setCardState={setAnimals}
-        setLoading={setLoading}
-        setError={setError}
-      ></Search>
-      <ErrorBoundary>
-        <CardList
-          animalsList={animals}
-          loading={loading}
-          error={error}
-        ></CardList>
-        <ErrorButton />
-      </ErrorBoundary>
-    </>
-  );
-};
-
-export default App;
+export default function App(): React.JSX.Element {
+  return <RouterProvider router={router} />;
+}
