@@ -3,6 +3,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { ROUTES } from './utils/constants';
 import { Main } from './pages/main/main';
 import NotFound from './pages/not-found/not-found';
+import About from './pages/about/about';
 
 const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
   {
     path: ROUTES.NOTFOUND,
     element: <NotFound />,
+  },
+  {
+    path: ROUTES.ABOUT,
+    element: <About />,
   },
 ]);
 
