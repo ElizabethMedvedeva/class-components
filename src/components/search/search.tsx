@@ -3,8 +3,8 @@ import type { SearchProps } from '../../types/types';
 import { useSearchStorage } from '../../hooks/useLocalStorage';
 
 export const Search: React.FC<SearchProps> = ({ onSearch }) => {
-  const [inputValue, setInputValue] = useState('');
-  const { saveSearchTerm } = useSearchStorage();
+  const { saveSearchTerm, getSearchTerm } = useSearchStorage();
+  const [inputValue, setInputValue] = useState(getSearchTerm());
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
