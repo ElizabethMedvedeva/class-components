@@ -9,7 +9,6 @@ const router = createBrowserRouter([
   {
     path: ROUTES.MAIN,
     element: <Main />,
-    errorElement: <NotFound />,
   },
   {
     path: ROUTES.NOTFOUND,
