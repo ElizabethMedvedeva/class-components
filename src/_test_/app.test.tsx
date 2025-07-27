@@ -19,21 +19,20 @@ describe('App component tests', () => {
     render(<App />);
 
     await waitFor(() => {
-      expect(
-        screen.getByText(/something went wrong while searching/i)
-      ).toBeInTheDocument();
+      expect(screen.getByText(/failed to load animals/i)).toBeInTheDocument();
     });
   });
 
   // Makes initial API call with saved search term on mount
   it('Makes initial API call on component mount', async () => {
-    localStorage.setItem('searchTerm', 'dog');
     (searchRequest as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
       animals: [{ uid: '1', name: 'Doggo', avian: false, canine: true }],
     });
+
     render(<App />);
+
     await waitFor(() => {
-      expect(searchRequest).toHaveBeenCalledWith('dog');
+      expect(searchRequest).toHaveBeenCalledWith('', 0, 6);
       expect(screen.getByText(/doggo/i)).toBeInTheDocument();
     });
   });

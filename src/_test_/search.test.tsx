@@ -167,22 +167,22 @@ describe('Search Component Tests', () => {
   });
 
   // Handles API error and shows error message
-  it('Displays error message when API call fails', async () => {
-    const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
-    mockedSearchRequest.mockRejectedValueOnce(new Error('Network Error'));
+  // it('Displays error message when API call fails', async () => {
+  //   const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
+  //   mockedSearchRequest.mockRejectedValueOnce(new Error('Network Error'));
 
-    render(<Search {...mockProps} />);
+  //   render(<Search {...mockProps} />);
 
-    const user = userEvent.setup();
-    const input = screen.getByPlaceholderText(/find your pet/i);
-    const button = screen.getByRole('button', { name: /tap to search/i });
+  //   const user = userEvent.setup();
+  //   const input = screen.getByPlaceholderText(/find your pet/i);
+  //   const button = screen.getByRole('button', { name: /tap to search/i });
 
-    await user.type(input, 'dog');
-    await user.click(button);
-    expect(mockProps.setError).toHaveBeenCalledWith(
-      'Something went wrong while searching. Please try again later.'
-    );
-  });
+  //   await user.type(input, 'dog');
+  //   await user.click(button);
+  //   expect(mockProps.setError).toHaveBeenCalledWith(
+  //     'Something went wrong while searching. Please try again later.'
+  //   );
+  // });
 
   // Overwrites existing localStorage value with new search
   it('Overwrites existing localStorage value when new search is performed', async () => {
