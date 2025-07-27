@@ -57,7 +57,7 @@ describe('CardList component', () => {
 
     const testProps = {
       ...defaultCardListProps,
-      animals: mockAnimals,
+      animalsList: mockAnimals,
     };
     render(<CardList {...testProps} />);
     const items = screen.getAllByRole('heading', { level: 3 });
