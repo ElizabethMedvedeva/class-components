@@ -12,3 +12,5 @@ export const ROUTES = {
   ABOUT: '/about',
   NOTFOUND: '*',
 } as const;
+
+export const ITEMS_PER_PAGE = 6;

@@ -18,6 +18,9 @@ export type CardListProps = {
   animalsList: CardProps[];
   loading: boolean;
   error: string | null;
+  onNextPage: () => void;
+  onPrevPage: () => void;
+  currentPage: number;
 };
 
 export type SearchState = {
@@ -26,9 +29,6 @@ export type SearchState = {
 
 export type SearchProps = {
   onSearch?: (term: string) => void;
-  setCardState: (animal: CardProps[]) => void;
-  setLoading: (loading: boolean) => void;
-  setError: (error: string | null) => void;
 };
 
 export type SearchResponse = {

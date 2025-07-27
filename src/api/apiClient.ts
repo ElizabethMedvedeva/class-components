@@ -2,7 +2,7 @@ import type { SearchResponse } from '../types/types';
 
 export const searchRequest = async (
   title: string,
-  pageNumber: number = 1,
+  pageNumber: number = 0,
   pageSize: number = 6
 ): Promise<SearchResponse> => {
   const query = new URLSearchParams({
