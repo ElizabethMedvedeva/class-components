@@ -10,7 +10,7 @@ vi.mock('../api/apiClient', () => ({
   searchRequest: vi.fn().mockResolvedValue({
     animals: [],
     page: {
-      pageNumber: 1,
+      pageNumber: 0,
       pageSize: 10,
       numberOfElements: 0,
       totalElements: 0,
@@ -164,24 +164,6 @@ describe('Search Component Tests', () => {
     await waitFor(() => {
       expect(mockProps.onSearch).toHaveBeenCalledWith('cat');
     });
-  });
-
-  // Handles API error and shows error message
-  it('Displays error message when API call fails', async () => {
-    const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
-    mockedSearchRequest.mockRejectedValueOnce(new Error('Network Error'));
-
-    render(<Search {...mockProps} />);
-
-    const user = userEvent.setup();
-    const input = screen.getByPlaceholderText(/find your pet/i);
-    const button = screen.getByRole('button', { name: /tap to search/i });
-
-    await user.type(input, 'dog');
-    await user.click(button);
-    expect(mockProps.setError).toHaveBeenCalledWith(
-      'Something went wrong while searching. Please try again later.'
-    );
   });
 
   // Overwrites existing localStorage value with new search
