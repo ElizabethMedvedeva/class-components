@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import * as apiClient from '../api/apiClient';
 
-import { Search } from '../components/search/search';
+import { Main } from '../pages/main/main.tsx';
 import userEvent from '@testing-library/user-event';
 
 vi.mock('../api/apiClient', () => ({
   searchRequest: vi.fn().mockResolvedValue({
     animals: [],
     page: {
-      pageNumber: 1,
+      pageNumber: 0,
       pageSize: 10,
       numberOfElements: 0,
       totalElements: 0,
@@ -21,13 +21,6 @@ vi.mock('../api/apiClient', () => ({
 }));
 
 describe('Search Component Tests', () => {
-  const mockProps = {
-    setLoading: vi.fn(),
-    setCardState: vi.fn(),
-    setError: vi.fn(),
-    onSearch: vi.fn(),
-  };
-
   beforeEach(() => {
     vi.clearAllMocks();
     localStorage.clear();
@@ -39,9 +32,9 @@ describe('Search Component Tests', () => {
 
   // check correct renders search button and search input
   it('Renders search input and search button', () => {
-    render(<Search {...mockProps} />);
+    render(<Main />);
 
-    const input = screen.getByPlaceholderText(/find your pet/i);
+    const input = screen.getByPlaceholderText(/Find your pet/i);
     const searchButton = screen.getByRole('button', { name: /tap to search/i });
 
     expect(input).toBeInTheDocument();
@@ -76,16 +69,9 @@ describe('Search Component Tests', () => {
       },
     });
 
-    render(<Search {...mockProps} />);
-    const input = await screen.findByPlaceholderText(/find your pet/i);
+    render(<Main />);
+    const input = await screen.findByPlaceholderText(/Find your pet/i);
     expect(input).toHaveValue('dog');
-
-    await waitFor(() => {
-      expect(apiClient.searchRequest).toHaveBeenCalledWith('dog');
-      expect(mockProps.setCardState).toHaveBeenCalled();
-    });
-
-    expect(mockProps.setLoading).toHaveBeenCalledTimes(2);
   });
 
   //check if input is empty when no saved term exists
@@ -104,33 +90,43 @@ describe('Search Component Tests', () => {
       },
     });
 
-    render(<Search {...mockProps} />);
+    render(<Main />);
 
-    const input = await screen.findByPlaceholderText(/find your pet/i);
+    const input = await screen.findByPlaceholderText(/Find your pet/i);
 
     expect(input).toHaveValue('');
-    expect(mockProps.setLoading).toHaveBeenCalledTimes(2);
-
-    await waitFor(() => {
-      expect(mockProps.setCardState).toHaveBeenCalledWith([]);
-    });
   });
 
   // Verifies that the input field updates its value when the user types
   it('Updates input value when user types', async () => {
-    render(<Search {...mockProps} />);
+    render(<Main />);
 
-    const input = screen.getByPlaceholderText(/find your pet/i);
+    const input = screen.getByPlaceholderText(/Find your pet/i);
     await userEvent.clear(input);
     await userEvent.type(input, 'cat');
     expect(input).toHaveValue('cat');
   });
 
+  it('Displays error message when API call fails', async () => {
+    const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
+    mockedSearchRequest.mockRejectedValue(new Error('Network Error'));
+    render(<Main />);
+
+    const user = userEvent.setup();
+    const input = screen.getByPlaceholderText(/find your pet/i);
+    const button = screen.getByRole('button', { name: /tap to search/i });
+
+    await user.type(input, 'dog');
+    await user.click(button);
+    const errorText = screen.getByText(/Failed to load animals./i);
+    expect(errorText).toHaveTextContent('Failed to load animals.');
+  });
+
   // Check if search button save search term to LS
   it('Saves search term to localStorage when search button is clicked', async () => {
-    render(<Search {...mockProps} />);
+    render(<Main />);
 
-    const input = screen.getByPlaceholderText(/find your pet/i);
+    const input = screen.getByPlaceholderText(/Find your pet/i);
     const searchButton = screen.getByRole('button', { name: /tap to search/i });
     await userEvent.type(input, 'phoenix');
     await userEvent.click(searchButton);
@@ -140,8 +136,8 @@ describe('Search Component Tests', () => {
 
   // Check if whitespace before input was trimmed
   it('Trims whitespace from search input before saving', async () => {
-    render(<Search {...mockProps} />);
-    const input = screen.getByPlaceholderText(/find your pet/i);
+    render(<Main />);
+    const input = screen.getByPlaceholderText(/Find your pet/i);
     const searchButton = screen.getByRole('button', { name: /tap to search/i });
 
     await userEvent.type(input, '   dog   ');
@@ -152,35 +148,20 @@ describe('Search Component Tests', () => {
 
   // Checks that onSearch is called with trimmed input
   it('Triggers search callback with correct parameters', async () => {
-    render(<Search {...mockProps} />);
+    const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
+    render(<Main />);
 
     const user = userEvent.setup();
-    const input = screen.getByPlaceholderText(/find your pet/i);
+    const input = screen.getByPlaceholderText(/Find your pet/i);
     const searchButton = screen.getByRole('button', { name: /tap to search/i });
 
     await user.type(input, ' cat ');
     await user.click(searchButton);
 
-    await waitFor(() => {
-      expect(mockProps.onSearch).toHaveBeenCalledWith('cat');
-    });
-  });
-
-  // Handles API error and shows error message
-  it('Displays error message when API call fails', async () => {
-    const mockedSearchRequest = vi.mocked(apiClient.searchRequest);
-    mockedSearchRequest.mockRejectedValueOnce(new Error('Network Error'));
-
-    render(<Search {...mockProps} />);
-
-    const user = userEvent.setup();
-    const input = screen.getByPlaceholderText(/find your pet/i);
-    const button = screen.getByRole('button', { name: /tap to search/i });
-
-    await user.type(input, 'dog');
-    await user.click(button);
-    expect(mockProps.setError).toHaveBeenCalledWith(
-      'Something went wrong while searching. Please try again later.'
+    expect(mockedSearchRequest).toHaveBeenCalledWith(
+      'cat',
+      0,
+      expect.anything()
     );
   });
 
@@ -188,10 +169,10 @@ describe('Search Component Tests', () => {
   it('Overwrites existing localStorage value when new search is performed', async () => {
     localStorage.setItem('searchTerm', 'old term');
 
-    render(<Search {...mockProps} />);
+    render(<Main />);
 
     const user = userEvent.setup();
-    const input = screen.getByPlaceholderText(/find your pet/i);
+    const input = screen.getByPlaceholderText(/Find your pet/i);
     const searchButton = screen.getByRole('button', { name: /tap to search/i });
 
     await user.clear(input);

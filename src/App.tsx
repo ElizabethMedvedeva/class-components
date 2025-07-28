@@ -1,47 +1,25 @@
-import { Component } from 'react';
-import { CardList } from './components/card-list/card-list';
-import { Search } from './components/search/search';
-import type { AppState, CardProps } from './types/types';
-import { ErrorButton } from './components/error-boundary/error-button';
-import { ErrorBoundary } from './components/error-boundary/error-boundary';
+// App.tsx
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { ROUTES } from './utils/constants';
+import { Main } from './pages/main/main';
+import NotFound from './pages/not-found/not-found';
+import About from './pages/about/about';
 
-class App extends Component<object, AppState> {
-  state: AppState = {
-    animals: [],
-    loading: false,
-    error: null,
-  };
+const router = createBrowserRouter([
+  {
+    path: ROUTES.MAIN,
+    element: <Main />,
+  },
+  {
+    path: ROUTES.NOTFOUND,
+    element: <NotFound />,
+  },
+  {
+    path: ROUTES.ABOUT,
+    element: <About />,
+  },
+]);
 
-  setAnimals = (animals: Array<CardProps>) => {
-    this.setState({ animals: animals });
-  };
-
-  setLoading = (loading: boolean) => {
-    this.setState({ loading });
-  };
-
-  setError = (error: string | null) => {
-    this.setState({ error });
-  };
-  render() {
-    return (
-      <>
-        <Search
-          setCardState={this.setAnimals}
-          setLoading={this.setLoading}
-          setError={this.setError}
-        ></Search>
-        <ErrorBoundary>
-          <CardList
-            animalsList={this.state.animals}
-            loading={this.state.loading}
-            error={this.state.error}
-          ></CardList>
-          <ErrorButton />
-        </ErrorBoundary>
-      </>
-    );
-  }
+export default function App(): React.JSX.Element {
+  return <RouterProvider router={router} />;
 }
-
-export default App;
